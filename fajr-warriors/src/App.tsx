@@ -1,10 +1,24 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
+import { getUsersEmails } from './funcs/index.js';
 
 function App() {
   const [count, setCount] = useState(0)
+  const [test, setTest] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log('Hello, World!');
+      const emails = await getUsersEmails();
+      console.log(emails);
+      setTest(emails);
+    };
+    
+    fetchData();
+  }
+  , [])
 
   return (
     <>
@@ -25,9 +39,13 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div className="read-the-docs">
+        {
+          test.map((email, index) => (
+            <p key={index}>{email}</p>
+          ))  
+        }
+      </div>
     </>
   )
 }
