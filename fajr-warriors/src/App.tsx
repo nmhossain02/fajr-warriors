@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css';
-import { getUsersEmails } from './funcs/index.js';
+import { getUsersEmails, getStreakForUser } from './funcs/index.js';
 
 function App() {
   const [count, setCount] = useState(0)
-  const [test, setTest] = useState([])
+  const [test, setTest] = useState(0)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,9 +16,15 @@ function App() {
       setTest(emails);
     };
     
-    fetchData();
+    // fetchData();
   }
   , [])
+
+  const fetchStreak = async (name : string) => {
+    const streak = await getStreakForUser(name);
+    console.log(name, streak);
+    setTest(streak);
+  };
 
   return (
     <>
@@ -39,11 +45,12 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
+      <button onClick={() => fetchStreak('Nawid')}>
+          get streak
+      </button>
       <div className="read-the-docs">
         {
-          test.map((email, index) => (
-            <p key={index}>{email}</p>
-          ))  
+          test
         }
       </div>
     </>
